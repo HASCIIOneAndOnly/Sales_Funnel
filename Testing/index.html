@@ -10,6 +10,11 @@
 
 <body>
 <div class="container">
+    <div class="search-container">
+        <input type="text" id="global-search" placeholder="Поиск сделок...">
+        <div class="search-results" id="search-results"></div>
+    </div>
+    <div class="funnel-container">
     <div class="funnel">
         <!-- Здесь будут этапы воронки -->
         <div class="stage" onclick="showDealsModal('Создана сделка')">Создана сделка</div>
@@ -42,6 +47,7 @@
             </div>
             <div class="deal-additional-info"></div>
         </div>
+    </div>
     </div>
     <form action="/add_deal" method="post">
         <label for="name">Название сделки:</label>

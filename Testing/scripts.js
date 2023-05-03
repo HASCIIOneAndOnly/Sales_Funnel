@@ -3,6 +3,8 @@ const closeModalButton = document.querySelector(".close");
 const dealsList = document.querySelector(".deals-list");
 const dealModal = document.getElementById("deal-modal");
 const mainModal = document.getElementById("modal");
+const globalSearchInput = document.getElementById("global-search");
+const searchResults = document.getElementById("search-results");
 
 
 async function fetchDealsByStage(stage) {
@@ -80,5 +82,46 @@ window.addEventListener('click', (event) => {
         mainModal.style.display = "none";
     } else if (event.target === dealModal) {
         dealModal.style.display = "none";
+    }
+});
+
+async function showSearchResults(query) {
+    const response = await fetch(`/search_deals?query=${encodeURIComponent(query)}`);
+    const deals = await response.json();
+    return deals;
+}
+
+function renderSearchResults(deals) {
+    searchResults.innerHTML = "";
+    if (deals.length === 0) {
+        searchResults.style.display = "none";
+        return;
+    }
+
+    deals.forEach(function (deal) {
+        var listItem = document.createElement("li");
+        listItem.textContent = deal.name;
+        listItem.onclick = function () {
+            showDealModal(deal);
+        };
+        searchResults.appendChild(listItem);
+    });
+
+    searchResults.style.display = "block";
+}
+
+globalSearchInput.addEventListener("input", async () => {
+    if (globalSearchInput.value.trim() === "") {
+        searchResults.style.display = "none";
+        return;
+    }
+
+    const deals = await showSearchResults(globalSearchInput.value);
+    renderSearchResults(deals);
+});
+
+document.addEventListener("click", (event) => {
+    if (event.target !== globalSearchInput && event.target !== searchResults) {
+        searchResults.style.display = "none";
     }
 });
