@@ -1,50 +1,84 @@
-const stages = [
-    { title: 'Этап 1', deals: 10 },
-    { title: 'Этап 2', deals: 10 },
-    { title: 'Этап 3', deals: 10 },
-    { title: 'Этап 4', deals: 10 },
-    { title: 'Этап 5', deals: 10 },
-    { title: 'Этап 6', deals: 10 },
-];
+const modal = document.getElementById("modal");
+const closeModalButton = document.querySelector(".close");
+const dealsList = document.querySelector(".deals-list");
+const dealModal = document.getElementById("deal-modal");
+const mainModal = document.getElementById("modal");
 
-const funnel = document.querySelector('.funnel');
-const modal = document.getElementById('modal');
-const closeBtn = document.querySelector('.close');
-const dealsList = document.querySelector('.deals-list');
 
-function createStageElement(stage, index) {
-    const stageElement = document.createElement('div');
-    stageElement.classList.add('stage');
-    stageElement.innerHTML = `<h4>${stage.title}</h4><p>${stage.deals} сделок</p>`;
-    stageElement.addEventListener('click', () => showDealsModal(index));
-    return stageElement;
+async function fetchDealsByStage(stage) {
+    const response = await fetch(`/deals/${encodeURIComponent(stage)}`);
+    const deals = await response.json();
+    return deals;
 }
 
-function showDealsModal(stageIndex) {
-    const stage = stages[stageIndex];
-    dealsList.innerHTML = '';
 
-    for (let i = 0; i < stage.deals; i++) {
-        const dealElement = document.createElement('li');
-        dealElement.textContent = `Сделка ${i + 1} (${stage.title})`;
-        dealsList.appendChild(dealElement);
+function filterDeals(deals, query) {
+    return deals.filter(deal => deal.name.toLowerCase().includes(query.toLowerCase()));
+}
+
+
+function showDealModal(deal) {
+    var modal = document.getElementById("deal-modal");
+
+    document.querySelector(".deal-title").innerText = deal.name;
+    document.querySelector(".deal-stage").innerText = "Этап: " + deal.stage;
+    document.querySelector(".deal-cost").innerText = "Сумма сделки: " + deal.cost;
+    document.querySelector(".deal-created-date").innerText = "Дата создания сделки: " + deal.created_date;
+    document.querySelector(".deal-client-name").innerText = "Имя заказчика: " + deal.client_name;
+    document.querySelector(".deal-additional-info").innerText = deal.additional_info || '';
+
+    modal.style.display = "block";
+
+    var span = modal.getElementsByClassName("close")[0];
+    span.onclick = function () {
+        modal.style.display = "none";
+    };
+
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    };
+}
+
+function renderDeals(deals) {
+    var dealsList = document.querySelector(".deals-list");
+    dealsList.innerHTML = "";
+    deals.forEach(function (deal) {
+        var listItem = document.createElement("li");
+        listItem.textContent = deal.name;
+        listItem.onclick = function () {
+            showDealModal(deal);
+        };
+        dealsList.appendChild(listItem);
+    });
+}
+
+async function showDealsModal(stage) {
+    const deals = await fetchDealsByStage(stage);
+    const searchInput = document.getElementById("search");
+
+    function updateDealsList() {
+        const filteredDeals = filterDeals(deals, searchInput.value);
+        renderDeals(filteredDeals);
     }
+
+    searchInput.value = "";
+    searchInput.oninput = updateDealsList;
+
+    updateDealsList();
 
     modal.style.display = 'block';
 }
 
-function closeModal() {
-    modal.style.display = 'none';
-}
+closeModalButton.onclick = () => {
+    modal.style.display = "none";
+};
 
-stages.forEach(stage => {
-    const stageElement = createStageElement(stage, funnel.children.length);
-    funnel.appendChild(stageElement);
-});
-
-closeBtn.addEventListener('click', closeModal);
-window.addEventListener('click', event => {
-    if (event.target === modal) {
-        closeModal();
+window.addEventListener('click', (event) => {
+    if (event.target === mainModal) {
+        mainModal.style.display = "none";
+    } else if (event.target === dealModal) {
+        dealModal.style.display = "none";
     }
 });
