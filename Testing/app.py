@@ -1,37 +1,18 @@
-from flask import send_from_directory
-from models import Deal
-from flask import jsonify, request
+from flask import jsonify, request, render_template
 from models import Deal, db
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://amepifanov:fhntv2003@localhost:5050/course_project_db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 
-@app.before_first_request
 def create_tables():
     db.create_all()
 
-
-@app.route('/')
-def index():
-    return send_from_directory('.', 'index.html')
-
-
-@app.route('/<path:path>')
-def static_files(path):
-    return send_from_directory('.', path)
-
-
-@app.route('/search_deals', methods=['GET'])
-def search_deals():
-    query = request.args.get('query', '')
-    deals = Deal.query.filter(Deal.name.ilike(f"%{query}%")).all()
+def make_deals_list(deals):
     deals_list = []
-
     for deal in deals:
         deal_data = {
             'id': deal.id,
@@ -43,8 +24,20 @@ def search_deals():
             'additional_info': deal.additional_info
         }
         deals_list.append(deal_data)
+    return deals_list
 
-    return jsonify(deals_list)
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/search_deals', methods=['GET'])
+def search_deals():
+    query = request.args.get('query', '')
+    deals = Deal.query.filter(Deal.name.ilike(f"%{query}%")).all()
+    return jsonify(make_deals_list(deals))
 
 
 
@@ -75,22 +68,10 @@ def add_deal():
 @app.route('/deals/<string:stage>', methods=['GET'])
 def get_deals_by_stage(stage):
     deals = Deal.query.filter_by(stage=stage).all()
-    deals_list = []
-
-    for deal in deals:
-        deal_data = {
-            'id': deal.id,
-            'name': deal.name,
-            'stage': deal.stage,
-            'cost': str(deal.cost),
-            'created_date': deal.created_date.strftime("%Y-%m-%d"),
-            'client_name': deal.client_name,
-            'additional_info': deal.additional_info
-        }
-        deals_list.append(deal_data)
-
-    return jsonify(deals_list)
+    return jsonify(make_deals_list(deals))
 
 
 if __name__ == "__main__":
+    with app.app_context():
+        create_tables()
     app.run(debug=True, port=5600)
