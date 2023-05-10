@@ -4,7 +4,7 @@ from flask import Flask
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://amepifanov:fhntv2003@localhost:5050/course_project_db'
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 
@@ -74,4 +74,4 @@ def get_deals_by_stage(stage):
 if __name__ == "__main__":
     with app.app_context():
         create_tables()
-    app.run(debug=True, port=5600)
+    app.run(debug=True, port=5800)

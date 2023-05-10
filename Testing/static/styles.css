@@ -3,9 +3,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #f8dda7;
     height: 100vh;
     margin: 0;
 }
+
 
 .funnel {
     position: relative;
@@ -14,9 +16,12 @@ body {
     margin: 0 10px;
     cursor: pointer;
     text-align: center;
-    width: 400px; /* Ширина основания трапеции */
-    clip-path: polygon(0% 100%, 100% 100%, 80% 0%, 20% 0%); /* Форма трапеции */
+    width: 400px;
+    clip-path: polygon(0% 100%, 100% 100%, 80% 0%, 20% 0%);
     transform: rotate(180deg);
+    box-shadow: 10px 10px 15px 5px rgba(0, 0, 0, 0.5);
+    border-top: 4px solid #000000;
+    border-bottom: 4px solid #000000;
 }
 
 .funnel-inner {
@@ -24,16 +29,39 @@ body {
 }
 .stage {
     margin: 0 auto;
-    /*width: 100%;*/
     position: relative;
-    background-color: #f1f1f1;
     padding: 20px;
     cursor: pointer;
     text-align: center;
-    /*transform: rotate(180deg);*/
-    /*border-top: 1px solid black;*/
-    border-bottom: 1px solid black;
+    color: #ffffff; /* Белый текст */
+    text-shadow: 2px 2px 5px rgb(0, 0, 0); /* Тень текста */
+
 }
+
+
+.stage-1 {
+    background-color: #e12727;
+}
+
+.stage-2 {
+    border: 4px solid #000000; /* Добавленные черные рамки */
+    background-color: #eeee42 /* Жёлтый */
+}
+
+.stage-3 {
+    border-bottom: 4px solid #000000; /* Добавленные черные рамки */
+    background-color: #17d917; /* Зелёный */
+}
+
+.stage-4 {
+    border-bottom: 5px solid #000000; /* Добавленные черные рамки */
+    background-color: #2121ef; /* Синий */
+}
+
+.stage-5 {
+    background-color: #de3ede; /* Фиолетовый */
+}
+
 
 .stage:hover {
     opacity: 50%;
@@ -59,6 +87,10 @@ body {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
+.modal-content h3 {
+    padding-left: 25px;
+}
+
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto;
@@ -82,15 +114,6 @@ body {
     align-items: center;
 }
 
-/*.funnel {*/
-/*    display: flex;*/
-/*    flex-wrap: wrap;*/
-/*    justify-content: space-around;*/
-/*    !*margin-bottom: 30px;*!*/
-/*    !* Отступ снизу, чтобы форма была ниже этапов сделок *!*/
-/*    width: 100%;*/
-/*}*/
-
 .deals-list li {
     cursor: pointer;
     margin-bottom: 15px;
@@ -98,13 +121,10 @@ body {
 
 form {
     width: 30%;
-    /* Ограничить ширину формы до 80% ширины родительского элемента */
     margin: 0 auto;
-    /* Выровнять форму по центру */
     display: block;
     /* Установить форму как блочный элемент */
     padding-top: 20px;
-    /* Отступ сверху для формы */
 }
 
 form input,
@@ -118,9 +138,22 @@ form label {
     margin-bottom: 5px;
 }
 
-.search-container {
+.global-search-container {
     position: relative;
     margin-bottom: 100px;
+    width: 400px;
+}
+
+#global-search,
+#stage-search {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.search-container {
+    position: relative;
+    width: 96.5%;
+    margin-left: 25px;
 }
 
 .search-results {
@@ -142,8 +175,6 @@ form label {
 .search-results li:hover {
     background-color: #f1f1f1;
 }
-
-/*------------------------------_*/
 
 .deal-title {
     text-align: center;

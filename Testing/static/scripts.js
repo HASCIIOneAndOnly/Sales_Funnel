@@ -1,16 +1,32 @@
 const modal = document.getElementById("modal");
 const closeModalButton = document.querySelector(".close");
-const dealsList = document.querySelector(".deals-list");
 const dealModal = document.getElementById("deal-modal");
 const mainModal = document.getElementById("modal");
 const globalSearchInput = document.getElementById("global-search");
 const searchResults = document.getElementById("search-results");
+let deals = [];
 
 
 async function fetchDealsByStage(stage) {
     const response = await fetch(`/deals/${encodeURIComponent(stage)}`);
     const deals = await response.json();
-    return deals;
+    return deals.slice(0, 5);
+}
+
+function updateDealsList(deals) {
+    const searchInput = document.getElementById("stage-search");
+    const filteredDeals = filterDeals(deals, searchInput.value);
+    renderDeals(filteredDeals);
+}
+
+document.getElementById('clear-global-search').onclick = function() {
+    document.getElementById('global-search').value = '';
+}
+
+document.getElementById('clear-stage-search').onclick = function() {
+    const searchInput = document.getElementById('stage-search');
+    searchInput.value = '';
+    updateDealsList(deals);
 }
 
 
@@ -20,7 +36,7 @@ function filterDeals(deals, query) {
 
 
 function showDealModal(deal) {
-    var modal = document.getElementById("deal-modal");
+    const modal = document.getElementById("deal-modal");
 
     document.querySelector(".deal-title").innerText = deal.name;
     document.querySelector(".deal-stage").innerText = "Этап: " + deal.stage;
@@ -31,7 +47,7 @@ function showDealModal(deal) {
 
     modal.style.display = "block";
 
-    var span = modal.getElementsByClassName("close")[0];
+    const span = modal.getElementsByClassName("close")[0];
     span.onclick = function () {
         modal.style.display = "none";
     };
@@ -44,10 +60,10 @@ function showDealModal(deal) {
 }
 
 function renderDeals(deals) {
-    var dealsList = document.querySelector(".deals-list");
+    const dealsList = document.querySelector(".deals-list");
     dealsList.innerHTML = "";
     deals.forEach(function (deal) {
-        var listItem = document.createElement("li");
+        const listItem = document.createElement("li");
         listItem.textContent = deal.name;
         listItem.onclick = function () {
             showDealModal(deal);
@@ -57,18 +73,17 @@ function renderDeals(deals) {
 }
 
 async function showDealsModal(stage) {
-    const deals = await fetchDealsByStage(stage);
-    const searchInput = document.getElementById("search");
+    deals = await fetchDealsByStage(stage);
+    const searchInput = document.getElementById("stage-search");
 
-    function updateDealsList() {
-        const filteredDeals = filterDeals(deals, searchInput.value);
-        renderDeals(filteredDeals);
-    }
+    searchInput.oninput = function() {
+        updateDealsList(deals);
+    };
 
-    searchInput.value = "";
-    searchInput.oninput = updateDealsList;
+    // Заменяем заголовок модального окна на название этапа
+    document.querySelector(".modal-content h3").textContent = `Сделки этапа: ${stage}`;
 
-    updateDealsList();
+    updateDealsList(deals);
 
     modal.style.display = 'block';
 }
@@ -88,7 +103,7 @@ window.addEventListener('click', (event) => {
 async function showSearchResults(query) {
     const response = await fetch(`/search_deals?query=${encodeURIComponent(query)}`);
     const deals = await response.json();
-    return deals;
+    return deals.slice(0, 5);
 }
 
 function renderSearchResults(deals) {
@@ -99,7 +114,7 @@ function renderSearchResults(deals) {
     }
 
     deals.forEach(function (deal) {
-        var listItem = document.createElement("li");
+        const listItem = document.createElement("li");
         listItem.textContent = deal.name;
         listItem.onclick = function () {
             showDealModal(deal);
