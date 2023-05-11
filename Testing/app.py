@@ -41,30 +41,6 @@ def search_deals():
 
 
 
-@app.route('/add_deal', methods=['POST'])
-def add_deal():
-    try:
-        # Получение данных о сделке из запроса
-        name = request.form['name']
-        stage = request.form['stage']
-        cost = request.form['cost']
-        created_date = request.form['created_date']
-        client_name = request.form['client_name']
-        additional_info = request.form.get(
-            'additional_info', None)  # Может быть пустым
-
-        # Создание и сохранение сделки
-        deal = Deal(name=name, stage=stage, cost=cost, created_date=created_date,
-                    client_name=client_name, additional_info=additional_info)
-        db.session.add(deal)
-        db.session.commit()
-
-        return jsonify({'message': 'Сделка успешно добавлена'}), 201
-    except Exception as error:
-        return jsonify({'message': f'Ошибка при добавлении сделки: {error}'}), 400
-
-
-
 @app.route('/deals/<string:stage>', methods=['GET'])
 def get_deals_by_stage(stage):
     deals = Deal.query.filter_by(stage=stage).all()
