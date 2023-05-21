@@ -1,15 +1,17 @@
-from flask import jsonify, request, render_template
-from models import Deal, db
 from flask import Flask
+from flask import jsonify, request, render_template
+
+from models import Deal, db
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://amepifanov:fhntv2003@localhost:5050/course_project_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:liubov1969@localhost:60042/postgres'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 
 def create_tables():
     db.create_all()
+
 
 def make_deals_list(deals):
     deals_list = []
@@ -27,7 +29,6 @@ def make_deals_list(deals):
     return deals_list
 
 
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -38,7 +39,6 @@ def search_deals():
     query = request.args.get('query', '')
     deals = Deal.query.filter(Deal.name.ilike(f"%{query}%")).all()
     return jsonify(make_deals_list(deals))
-
 
 
 @app.route('/deals/<string:stage>', methods=['GET'])
