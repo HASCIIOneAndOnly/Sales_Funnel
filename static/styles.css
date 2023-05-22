@@ -3,12 +3,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /*background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);*/
-    background: #654ea3; /* fallback for old browsers */
-    background: -webkit-linear-gradient(to bottom, #eaafc8, #654ea3); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to bottom, #eaafc8, #654ea3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
+    background: #654ea3;
+    background: -webkit-linear-gradient(to bottom, #eaafc8, #654ea3);
+    background: linear-gradient(to bottom, #eaafc8, #654ea3);
     height: 100vh;
     margin: 0;
 }
@@ -21,12 +18,10 @@ body {
     margin: 0 10px;
     cursor: pointer;
     text-align: center;
-    width: 400px;
+    width: 520px;
     clip-path: polygon(0% 100%, 100% 100%, 80% 0%, 20% 0%);
     transform: rotate(180deg);
     box-shadow: 10px 10px 15px 5px;
-    /*border-top: 4px solid;*/
-    /*border-bottom: 4px solid;*/
 }
 
 .funnel-inner {
@@ -36,59 +31,40 @@ body {
 .stage {
     margin: 0 auto;
     position: relative;
-    padding: 20px;
+    padding: 40px;
     cursor: pointer;
     text-align: center;
-    color: ghostwhite; /* Белый текст */
-    /*text-shadow: 2px 2px 2px rgb(0, 0, 0); !* Тень текста *!*/
-
+    color: ghostwhite;
+    font-size: 24px;
 }
 
-/*white*/
-/*#CF9FFF*/
-/*#E0C3FC*/
-/*#E0B0FF*/
-/*#BF40BF*/
-
 .stage-1 {
-    /*background-image: linear-gradient(62deg, #E0C3FC 0%, #8EC5FC 100%);*/
-    /*background-color: rgb(118, 66, 215);*/
-    /*background-color: rgb(137, 109, 224);*/
     background-color: #eaafc8;
 
 }
 
 .stage-2 {
-    /*border: 3px solid #808080; !* Добавленные черные рамки *!*/
-    border: 3px solid lightgrey; /* Добавленные черные рамки */
-    /*background-image: linear-gradient(62deg, #E0C3FC 0%, #8EC5FC 100%);*/
-    /*background-color: rgb(137, 109, 224);*/
+    border: 3px solid lightgrey;
     background-color: rgb(210, 160, 190);
 }
 
 .stage-3 {
     border-bottom: 3px solid lightgrey;
-
-    /*background-image: linear-gradient(62deg, #E0C3FC 0%, #8EC5FC 100%);*/
     background-color: rgb(180, 140, 180);
 }
 
 .stage-4 {
     border-bottom: 3px solid lightgrey;
-    /*background-image: linear-gradient(62deg, #E0C3FC 0%, #8EC5FC 100%);*/
     background-color: rgb(141, 114, 170);
 }
 
 .stage-5 {
     background-color: #654ea3;
-
-    /*background-color: rgb(235, 63, 113);*/
-    /*background-image: linear-gradient(62deg, #E0C3FC 0%, #8EC5FC 100%);*/
 }
 
 
 .stage:hover {
-    opacity: 50%;
+    background-color: #E0C3FC;
 }
 
 .stage:last-of-type {
@@ -141,13 +117,18 @@ body {
 .deals-list li {
     cursor: pointer;
     margin-bottom: 15px;
+    height: 35px;
+    font-size: 20px;
+}
+
+.deals-list li:hover {
+    color: #E0C3FC;
 }
 
 form {
     width: 30%;
     margin: 0 auto;
     display: block;
-    /* Установить форму как блочный элемент */
     padding-top: 20px;
 }
 
@@ -164,16 +145,25 @@ form label {
 }
 
 .global-search-container {
-    font-size: 16px;
+    font-size: 20px;
     position: relative;
     margin-bottom: 100px;
-    width: 400px;
-    padding-right: 35px;
+    width: 520px;
+    padding-right: 30px;
 }
 
-.global-search-container input[type="text"] {
-    height: 30px; /* Adjust this value to change the search bar's height */
+.search-container {
+    font-size: 20px;
+    position: relative;
+    width: 300px;
+    padding-right: 30px;
+}
+
+.global-search-container input[type="text"], .search-container input[type="text"] {
+    height: 40px; /* Adjust this value to change the search bar's height */
     font-size: 16px;
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 #clear-global-search {
@@ -181,35 +171,52 @@ form label {
     top: 50%;
     transform: translateY(-50%);
     right: 0;
-    height: 30px;
-    width: 30px;
+    height: 40px;
+    width: 40px;
     border-radius: 10px;
     background-color: #E0C3FC;
     border-color: #8EC5FC;
 }
 
+#clear-stage-search {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 120px;
+    height: 40px;
+    width: 40px;
+    border-radius: 10px;
+    background-color: #E0C3FC;
+    border-color: #8EC5FC;
+}
 
-#global-search,
-#stage-search {
+#global-search {
     width: 100%;
+    box-sizing: border-box;
+}
+
+#stage-search {
+    width: 80%;
     box-sizing: border-box;
 }
 
 .search-container {
     position: relative;
-    width: 96.5%;
+    width: 100%;
     margin-left: 25px;
 }
 
 .search-results {
     position: absolute;
-    width: 100%;
+    width: 99.4%;
     background-color: white;
     border: 1px solid #ccc;
     display: none;
     max-height: 200px;
     overflow-y: auto;
     z-index: 1000;
+    border-radius: 5px;
+
 }
 
 .search-results li {
@@ -218,7 +225,8 @@ form label {
 }
 
 .search-results li:hover {
-    background-color: #f1f1f1;
+    /*background-color: #E0C3FC;*/
+    color: #E0C3FC;
 }
 
 .deal-title {
