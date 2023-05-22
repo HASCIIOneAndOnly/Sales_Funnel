@@ -43,7 +43,7 @@ function showDealModal(deal) {
     document.querySelector(".deal-cost").innerText = "Сумма сделки: " + deal.cost;
     document.querySelector(".deal-created-date").innerText = "Дата создания сделки: " + deal.created_date;
     document.querySelector(".deal-client-name").innerText = "Имя заказчика: " + deal.client_name;
-    document.querySelector(".deal-additional-info").innerText = deal.additional_info || '';
+    document.querySelector(".deal-additional-info").innerText = deal.additional_info || 'Дополнительной информации нет.';
 
     modal.style.display = "block";
 
